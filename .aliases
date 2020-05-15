@@ -1,0 +1,46 @@
+#!/bin/zsh
+
+# List variants
+alias ll='ls -la'
+alias la='ls -A'
+alias l='ls'
+
+# Vim
+alias v='nvim'
+alias vim='nvim'
+
+# Others
+alias sd='sudo dnf'
+alias gpuinfo='glxinfo | egrep "OpenGL vendor|OpenGL renderer"'
+alias SS='sudo systemctl'
+alias on='o nautilus .'
+alias mkd='mkdir -pv'
+alias clip='tee >(xclip -selection clipboard)'
+alias tt='print -z "θ "'
+
+# rpm has a strange syntax
+alias owns='rpm -qf'
+
+# Manage dotfiles
+alias config='/usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME"'
+
+# Shortcuts
+function bm() {
+	cd "$(bookmark $@)"
+}
+alias g='bm'
+alias @='bm'
+
+# Git
+alias gstatus='git status'
+alias gst='git status'
+alias gdiff='git diff'
+alias gcommit='git commit'
+alias gadd='git add'
+alias gpush='git push'
+
+# For when I forget I'm not in vim
+alias :e='nvim'
+alias :q='exit'
+alias :qa='killall $TERMINAL'
+
