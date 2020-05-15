@@ -1,0 +1,143 @@
+"
+" Options
+"
+
+" Emulated plugins
+set surround
+set multiple-cursors
+
+" Use Idea to join lines smartly
+set ideajoin
+
+" Sensible search
+set ignorecase
+set smartcase
+set incsearch
+
+" Use relative numbers
+set number
+set relativenumber
+
+" 3 lines above or below cursor when scrolling
+set scrolloff=3
+
+"
+" Keymap
+"
+let mapleader = " "
+
+" Use Q for formatting the current paragraph (or visual selection)
+vmap Q gq
+nmap Q gqap
+
+" Vim unimpaired like line creation
+nnoremap [<Space> O<esc>j
+nnoremap ]<Space> o<esc>k
+
+" Closing tabs
+nmap <leader>q :action CloseContent<cr>
+nmap <leader>Q :action ReopenClosedTab<cr>
+
+" To navigate between split panes
+nmap <C-j> :action NextSplitter<cr>
+nmap <C-k> :action PrevSplitter<cr>
+
+" Split creation and managment
+nmap <leader>ws :action SplitHorizontally<cr>
+nmap <leader>wv :action SplitVertically<cr>
+nmap <leader>wc :action Unsplit<cr>
+nmap <leader>wC :action UnsplitAll<cr>
+nmap <leader>wd :action OpenEditorInOppositeTabGroup<cr>
+nmap <leader><leader> :action VimFilePrevious<cr>
+nmap <A-q> <C-w>c
+
+" Navigation
+nmap gd :action GotoDeclaration<cr>
+nmap gi :action GotoImplementation<cr>
+nmap gs :action Switcher<cr>
+nmap gI :action SelectIn<cr>
+nmap gb :action ShowBookmarks<cr>
+nmap gT :action GotoTest<cr>
+nmap <leader>gu :action FindUsages<cr>
+nmap <leader>gf :action GotoFile<cr>
+nmap <leader>gc :action GotoClass<cr>
+nmap <leader>gs :action GotoSymbol<cr>
+nmap <leader>; :action FileStructurePopup<cr>
+
+" Project search
+nmap <leader><Space> :action SearchEverywhere<cr>
+nmap <C-p> :action GotoFile<cr>
+
+" Change a single word in a snake case variable name
+nnoremap cu ct_
+nnoremap ciu T_ct_
+
+" Paste in insert mode
+inoremap <C-v> <esc>"+pa
+
+" Jump to start or end of line easier
+nnoremap <C-l> $
+onoremap <C-l> $
+nnoremap <C-h> ^
+onoremap <C-h> ^
+
+" Stay in visual mode for indentation
+vnoremap > >gv
+vnoremap < <gv
+
+" Errors and vcs changes
+nnoremap <leader>e :action ShowErrorDescription<CR>
+nnoremap ]g :action GotoNextError<CR>
+nnoremap [g :action GotoPreviousError<CR>
+nnoremap [q :action PreviousOccurence<cr>
+nnoremap ]q :action NextOccurence<cr>
+nnoremap [m :action MethodUp<cr>
+nnoremap ]m :action MethodDown<cr>
+nnoremap [c :action VcsShowPrevChangeMarker<cr>
+nnoremap ]c :action VcsShowNextChangeMarker<cr>
+
+" Refactorings
+vmap T :action Refactorings.QuickListPopupAction<cr>
+nmap <leader>rr :action RenameElement<cr>
+nmap <leader>rg :action Generate<cr>
+nmap <leader>rI :action OptimizeImports<cr>
+nmap <leader>rc :action InspectCode<cr>
+
+" VCS operations
+nmap <leader>vv :action Vcs.Show.Local.Changes<cr>                          
+nmap <leader>vp :action Vcs.QuickListPopupAction<cr>
+nmap <leader>va :action Annotate<cr>
+nmap <leader>vl :action Vcs.Show.Log<cr>
+nmap <leader>vd :action Compare.LastVersion<cr>
+nmap <leader>vr :action Git.ResolveConflicts<cr>                          
+
+" Terminal
+nmap gt :action ActivateTerminalToolWindow<cr>
+
+" Commenting
+nmap gcc :action CommentByLineComment<cr>
+vmap gcc :action CommentByLineComment<cr>
+
+" Tabs
+nnoremap [b :action PreviousTab<cr>
+nnoremap ]b :action NextTab<cr>
+
+" Moving lines
+nmap [e :action MoveLineUp<cr>
+nmap ]e :action MoveLineDown<cr>
+nmap [s :action MoveStatementUp<cr>
+nmap ]s :action MoveStatementDown<cr>
+
+" Building, Running and Debugging
+nmap ,c :action CompileDirty<cr>
+nmap ,r :action Run<cr>
+nmap ,R :action RunAnything<cr>
+nmap ,b :action Debug<cr>
+nmap ,c :action RunClass<cr>
+nmap ,d :action DebugClass<cr>
+nmap ,t :action RerunTests<cr>                                         
+nmap ,T :action RerunFailedTests<cr>
+
+" External neovim
+nmap <leader>ov :action Tool_External Tools_Neovim<cr>
+nmap <leader>oe :action Tool_External Tools_Nautilus<cr>
