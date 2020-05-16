@@ -23,6 +23,9 @@ alias owns='rpm -qf'
 
 # Manage dotfiles
 alias config='/usr/bin/git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME"'
+alias cst='config status'
+alias cadd='config add'
+alias ccommit='config commit'
 
 # Shortcuts
 function bm() {
