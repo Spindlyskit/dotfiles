@@ -3,6 +3,10 @@
 #
 
 # Load antigen for plugin management
+if [ ! -f ~/.antigen.zsh ]; then
+	echo Installing antigen
+	curl -L git.io/antigen > ~/.antigen.zsh
+fi
 source ~/.antigen.zsh
 
 # Fish-like syntax highlighting
