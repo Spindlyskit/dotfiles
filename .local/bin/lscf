@@ -1,0 +1,2 @@
+#!/bin/sh
+lscfg "$HOME/.config/configs.conf" "$1"

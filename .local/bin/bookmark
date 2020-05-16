@@ -1,0 +1,18 @@
+#!/bin/sh
+# Go to a bookmark
+# Echo's the selected dir to sdtout
+[ -z "$FZF_BM_COMMAND" ] && FZF_BM_COMMAND='fzf'
+if [ -z "$1" ]; then
+	dest_dir=$(lsbm files | sort | $FZF_BM_COMMAND)
+	if [ "$dest_dir" != '' ]; then
+		echo "$dest_dir" | sed "s|~|$HOME|g"
+	fi
+else
+	dest_dir=$(lsbm | sed -n -e "/^$1 /Ip" | cut -d' ' -f 2-)
+	if [ -n "$dest_dir" ]; then
+		dest_dir=$(echo "$dest_dir" | sed "s|~|$HOME|g")
+		echo "$dest_dir"
+	else
+		echo "'$1' is not a bookmark"
+	fi
+fi

@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+# durls - Download a list of urls from stdin in parallel
+
+while read -r line; do
+	echo "Dowloading $line"
+	wget "$line" &
+done
+

@@ -1,0 +1,16 @@
+#!/bin/sh
+# Add a bookmark
+if [ -z "$1" ]; then
+	echo Please provide a code
+	return
+fi
+# Check if bm already exists
+if lsbm codes | grep -q "^$1"; then
+	echo "Bookmark '$1' already exists"
+	return
+fi
+if lsbm files | grep -q "^$PWD/\?$"; then
+	echo "'$PWD' is already bookmarked"
+	return
+fi
+echo "$1 $PWD" | sed "s|$HOME|~|" >> "$HOME/.bookmarks"

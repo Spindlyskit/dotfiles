@@ -1,0 +1,3 @@
+#!/bin/sh
+# Wrapper to be able to use ranger in xdg-open
+$TERMINAL -e "ranger $*"

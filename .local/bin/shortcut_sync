@@ -1,0 +1,27 @@
+#!/bin/sh
+[ "$RANGER_SHORTCUT_FILE" ] || RANGER_SHORTCUT_FILE="$HOME/dotfiles/ranger/shortcuts.conf"
+[ "$ZSH_SHORTCUT_FILE" ] || ZSH_SHORTCUT_FILE="$HOME/.shortcuts.zsh"
+[ "$GTK_SHORTCUT_FILE" ] || GTK_SHORTCUT_FILE="$HOME/.config/gtk-3.0/bookmarks"
+rm "$RANGER_SHORTCUT_FILE"
+rm "$ZSH_SHORTCUT_FILE"
+rm "$GTK_SHORTCUT_FILE"
+lsbm | while read -r a; do
+	bookmark=$a
+	code=$(echo "$bookmark" | awk '{print $1}')
+	directory=$(echo "$bookmark" | cut -d' ' -f 2-)
+
+	# Ranger
+	scheme="map g$code cd $directory
+	map t$code tab_new $directory
+	map m$code shell mv -v %s $directory
+	map Y$code shell cp -rv %s $directory"
+	echo "$scheme" | sed 's/^\s*//' >> "$RANGER_SHORTCUT_FILE"
+
+	# Zsh
+	lower_code=$(echo "$code" | perl -ne 'print lc')
+	echo "alias @$lower_code='cd \"\$(bookmark $lower_code)\"'" >> "$ZSH_SHORTCUT_FILE"
+
+	# Gtk
+	echo "file://$(echo $directory | sed "s|~|$HOME|;s/ /%20/")" >> $GTK_SHORTCUT_FILE
+done
+

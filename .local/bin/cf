@@ -1,0 +1,23 @@
+#!/bin/sh
+# Open a config file with $EDITOR
+if [ -z "$1" ]; then
+	cf_file=$(lscf files | fzf )
+	if [ "$cf_file" != '' ]; then
+	   cf_file=$(echo "$cf_file" | sed "s|~|$HOME|g")
+	   (
+		   cd "${cf_file%/*}" || exit
+		   $EDITOR "$cf_file"
+	   )
+	fi
+else
+	cf_file=$(lscf | sed -n -e "/^$1 /p" | sed 's/.* //g')
+	if [ -n "$cf_file" ]; then
+	   cf_file=$(echo "$cf_file" | sed "s|~|$HOME|g")
+	   (
+		   cd "${cf_file%/*}" || exit
+		   $EDITOR "$cf_file"
+	   )
+   else
+	   echo "'$1' is not a config file"
+   fi
+fi
