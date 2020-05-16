@@ -8,26 +8,52 @@ error() {
 	exit 1
 }
 
+work_dir="$(pwd)/gnome-setup"
+[ -d "$work_dir" ] && error "$work_dir already exists"
+mkdir -v "$work_dir"
+cd "$work_dir"
+
 extension_dir="$HOME/.local/share/gnome-shell/extensions"
-mkdir -pv extension_dir || error "Failed to create $extension_dir"
+mkdir -pv "$extension_dir" || error "Failed to create $extension_dir"
 
 gnome-shell-extension-installer 19 615 779 959 1092 1112 1319 || error 'Failed to install extensions'
 
 # Temporary special case for dynamic panel transparency
 # The version on extensions.gnome.org is broken
+panel_work_dir="$(pwd)/dynamic-panel-transparency"
 panel_trans_dir="$extension_dir/dynamic-panel-transparency@rockon999.github.io"
 [ -d "$panel_trans_dir" ] && rm -rfi "$panel_trans_dir"
-git clone -n 'https://github.com/arthurflor23/dynamic-panel-transparency.git' "$panel_trans_dir"
-pushd "$panel_trans_dir"
+git clone -n 'https://github.com/arthurflor23/dynamic-panel-transparency.git' "$panel_work_dir"
+pushd "$panel_work_dir"
 git checkout baad85ffd73d1e70dbc8fabae660fe53b213d593
+mv 'dynamic-panel-transparency@rockon999.github.io' "$panel_trans_dir"
 gnome-shell-extension-tool -e dynamic-panel-transparency@rockon999.github.io
 popd
+rm -rf "$panel_work_dir"
 
 # Install themes
+# Gtk theme
 git clone 'https://github.com/vinceliuice/Matcha-gtk-theme.git'
 pushd 'Matcha-gtk-theme'
 ./install.sh -t azul
 popd
+
+# Icon theme
+git clone 'https://github.com/vinceliuice/Qogir-icon-theme.git'
+pushd 'Qogir-icon-theme'
+./install.sh
+popd
+
+# Capitaine cursors
+cursor_file='Capitaine-cursors'
+cursor_dir='cursors'
+icon_directory="$HOME/.icons"
+curl -o "$cursor_file.tar.gz" 'https://dllb2.pling.com/api/files/download/j/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjE1NTE5NzA2NzciLCJ1IjpudWxsLCJsdCI6ImRvd25sb2FkIiwicyI6IjI3YWM2ODYwYWU1NjdkNzAzYjRkMzA4NDg5NjhjYjQ5NTEwMmNlNmUxM2Y5MmIwZDhkMzk4ODhjMDE5ODYyNDc2NTIyZDg5YTYzOGZhNTQyMWNkYjIzZWM4MmEwMmE0ZDdmYTc3MTRjNWMwZmU4NzZlNzRlNzUzMTEyY2MyNDIyIiwidCI6MTU4OTY0OTA1MSwic3RmcCI6IjAxM2Q1Njc2NmU4NWFiNWZhMTBiZTJhMWFlNWQwY2QzIiwic3RpcCI6Ijg5LjI0My40My42OSJ9.MZGmhLMwRJztV5pyPvyzhaWXXFU5itSh-EvZNiTEK9w/capitaine-cursors-r3.tar.gz'
+mkd "$cursor_dir"
+tar -C "$cursor_dir" xzvf "$cursor_file.tar.gz"
+[ -d "$cursor_dir" ] || error 'Failed to extract cursors'
+mkdir -pv "$icon_directory" || error 'Failed to create icon directory'
+mv "$cursor_dir" "$icon_directory/$cursor_file"
 
 # Load dconf
 dconf_file="$HOME/.local/lib/dconf.ini"
