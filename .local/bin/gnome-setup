@@ -1,0 +1,35 @@
+#!/bin/bash -e
+# Perform basic setup of my GNOME enviroment
+# Installs extensions and loads dconf settings
+# Requires gnome-shell-extension-installer
+
+error() {
+	printf '\033[0;31m%s' "$1" >&2
+	exit 1
+}
+
+extension_dir="$HOME/.local/share/gnome-shell/extensions"
+mkdir -pv extension_dir || error "Failed to create $extension_dir"
+
+gnome-shell-extension-installer 19 615 779 959 1092 1112 1319 || error 'Failed to install extensions'
+
+# Temporary special case for dynamic panel transparency
+# The version on extensions.gnome.org is broken
+panel_trans_dir="$extension_dir/dynamic-panel-transparency@rockon999.github.io"
+[ -d "$panel_trans_dir" ] && rm -rfi "$panel_trans_dir"
+git clone -n 'https://github.com/arthurflor23/dynamic-panel-transparency.git' "$panel_trans_dir"
+pushd "$panel_trans_dir"
+git checkout baad85ffd73d1e70dbc8fabae660fe53b213d593
+gnome-shell-extension-tool -e dynamic-panel-transparency@rockon999.github.io
+popd
+
+# Install themes
+git clone 'https://github.com/vinceliuice/Matcha-gtk-theme.git'
+pushd 'Matcha-gtk-theme'
+./install.sh -t azul
+popd
+
+# Load dconf
+dconf_file="$HOME/.local/lib/dconf.ini"
+[ -f "$dconf_file" ] || error "Missing $dconf_file"
+< "$dconf_file" dconf load /
