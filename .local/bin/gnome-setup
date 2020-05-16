@@ -46,14 +46,14 @@ popd
 
 # Capitaine cursors
 cursor_file='Capitaine-cursors'
-cursor_dir='cursors'
+cursor_dir='capitaine-cursors-r3'
 icon_directory="$HOME/.icons"
-curl -o "$cursor_file.tar.gz" 'https://dllb2.pling.com/api/files/download/j/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjE1NTE5NzA2NzciLCJ1IjpudWxsLCJsdCI6ImRvd25sb2FkIiwicyI6IjI3YWM2ODYwYWU1NjdkNzAzYjRkMzA4NDg5NjhjYjQ5NTEwMmNlNmUxM2Y5MmIwZDhkMzk4ODhjMDE5ODYyNDc2NTIyZDg5YTYzOGZhNTQyMWNkYjIzZWM4MmEwMmE0ZDdmYTc3MTRjNWMwZmU4NzZlNzRlNzUzMTEyY2MyNDIyIiwidCI6MTU4OTY0OTA1MSwic3RmcCI6IjAxM2Q1Njc2NmU4NWFiNWZhMTBiZTJhMWFlNWQwY2QzIiwic3RpcCI6Ijg5LjI0My40My42OSJ9.MZGmhLMwRJztV5pyPvyzhaWXXFU5itSh-EvZNiTEK9w/capitaine-cursors-r3.tar.gz'
-mkd "$cursor_dir"
-tar -C "$cursor_dir" xzvf "$cursor_file.tar.gz"
+curl -o "$cursor_file.tar.gz" 'https://codeload.github.com/keeferrourke/capitaine-cursors/tar.gz/r3'
+mkdir "$cursor_dir"
+tar xzvf "$cursor_file.tar.gz"
 [ -d "$cursor_dir" ] || error 'Failed to extract cursors'
 mkdir -pv "$icon_directory" || error 'Failed to create icon directory'
-mv "$cursor_dir" "$icon_directory/$cursor_file"
+mv "$cursor_dir/dist" "$icon_directory/$cursor_file"
 
 # Load dconf
 dconf_file="$HOME/.local/lib/dconf.ini"
