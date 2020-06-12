@@ -1,0 +1,59 @@
+#!/usr/bin/env python
+# Trim an audiobook
+# trimab <book> <chapterfile> [author]
+
+import os
+import sys
+
+if len(sys.argv) < 3:
+    print('Missing arguments')
+    exit(1)
+
+bookFile = sys.argv[1]
+chapterFile = sys.argv[2]
+author = sys.argv[3] if len(sys.argv) > 3 else None
+chapters = 0
+
+authorOpt = f" -metadata artist=\"{author}\"" if author else ''
+
+if not os.path.isfile(bookFile):
+    print(f"Invalid file: {bookFile}")
+    exit(1)
+
+if not os.path.isfile(chapterFile):
+    print(f"Invalid file: {chapterFile}")
+    exit(1)
+
+try:
+    f = open(chapterFile)
+except:
+    print(f"Failed to open: {chapterFile}")
+    exit(1)
+finally:
+    with f:
+        chapters = f.readlines()
+
+times = []
+names = []
+
+#command = f"ffmpeg -i \"{bookFile}\" -ss \"{ss}\" -to \"0\" \"{str(i)} - {name}.mp3\""
+
+for c in chapters:
+    c = c.strip().split(' ', 1)
+
+    times.append(c[0])
+    names.append(c[1])
+
+
+for i in range(len(times)):
+    t = times[i]
+    n = names[i]
+
+    nt = None
+    if len(times) > i + 1:
+        nt = times[i + 1]
+
+    startTime = f" -ss \"{t}\"" if t and t != '0:0' else ''
+    endTime = f" -to \"{nt}\"" if nt else ''
+
+    os.system(f"ffmpeg -i \"{bookFile}\"{startTime}{endTime}{authorOpt} -metadata title=\"{n}\" -metadata track=\"{str(i + 1)}/{len(times)}\" \"{str(i)} - {n}.mp3\"")
