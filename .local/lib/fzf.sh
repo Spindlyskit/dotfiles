@@ -16,7 +16,7 @@ fkill() {
 
 # fo [FUZZY PATTERN] - Open the selected file with the default editor
 #   - Bypass fuzzy finder if there's only one match (--select-1)
-#   - Use rifle to open with a program if C-o is pressed
+#   - Use sushi to open with a program if C-o is pressed
 #   - Exit if there's no match (--exit-0)
 fo() {
   local out file key
@@ -24,7 +24,7 @@ fo() {
   key=$(head -1 <<< "$out")
   file=$(head -2 <<< "$out" | tail -1)
   if [ -n "$file" ]; then
-    [ "$key" = ctrl-o ] && rifle "$file" || ${EDITOR:-vim} "$file"
+    [ "$key" = ctrl-o ] && sushi "$file" || ${EDITOR:-vim} "$file"
   fi
 }
 
